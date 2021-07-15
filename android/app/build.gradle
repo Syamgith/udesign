@@ -24,21 +24,27 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+apply plugin: 'com.google.ar.sceneform.plugin'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 29
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.udesign"
-        minSdkVersion 16
-        targetSdkVersion 30
+        minSdkVersion 24
+        targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -48,6 +54,11 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 flutter {
@@ -56,4 +67,27 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
+
+sceneform.asset('sampledata/Andy.obj',
+        'default',
+        'sampledata/Andy.sfa',
+        'src/main/assets/andy')
+
+sceneform.asset('sampledata/TocoToucan.obj',
+        'default',
+        'sampledata/TocoToucan.sfa',
+        'src/main/assets/toucan')
+
+sceneform.asset('sampledata/ArcticFox_Posed.obj',
+        'default',
+        'sampledata/ArcticFox_Posed.sfa',
+        'src/main/assets/artic_fox')
+
+sceneform.asset('sampledata/fox_face.fbx',
+        'sampledata/fox_face_material.mat',
+        'sampledata/fox_face.sfa',
+        'src/main/assets/fox_face')
