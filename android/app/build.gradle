@@ -77,17 +77,17 @@ sceneform.asset('sampledata/Andy.obj',
         'sampledata/Andy.sfa',
         'src/main/assets/andy')
 
-sceneform.asset('sampledata/TocoToucan.obj',
-        'default',
-        'sampledata/TocoToucan.sfa',
-        'src/main/assets/toucan')
+// sceneform.asset('sampledata/TocoToucan.obj',
+//         'default',
+//         'sampledata/TocoToucan.sfa',
+//         'src/main/assets/toucan')
 
-sceneform.asset('sampledata/ArcticFox_Posed.obj',
-        'default',
-        'sampledata/ArcticFox_Posed.sfa',
-        'src/main/assets/artic_fox')
+// sceneform.asset('sampledata/ArcticFox_Posed.obj',
+//         'default',
+//         'sampledata/ArcticFox_Posed.sfa',
+//         'src/main/assets/artic_fox')
 
-sceneform.asset('sampledata/fox_face.fbx',
-        'sampledata/fox_face_material.mat',
-        'sampledata/fox_face.sfa',
-        'src/main/assets/fox_face')
+// sceneform.asset('sampledata/fox_face.fbx',
+//         'sampledata/fox_face_material.mat',
+//         'sampledata/fox_face.sfa',
+//         'src/main/assets/fox_face')

@@ -1,5 +1,5 @@
 name: udesign
-description: Demonstrates how to use the arcore_flutter_plugin plugin.
+description: Design application.
 publish_to: 'none'
 
 environment:
@@ -29,19 +29,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/AndroidRobot.gif
-    - assets/ArcticFox.gif
-    - assets/TocoToucan.gif
-    - assets/fox_face_mesh_texture.png
-    - assets/prova_texture.png
-    - assets/venom.jpg
-    - assets/venom_with_eyes.jpg
-    - assets/earth.jpg
-    - assets/earth_augmented_image.jpg
-    - assets/copertina.jpg
-    - assets/umano_digitale.png
-    - assets/myimages.imgdb
-    - assets/topolino.jpg
+    - assets/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see
