@@ -18,49 +18,52 @@ class Home extends StatelessWidget {
               width: double.infinity,
             ),
             Scaffold(
-              bottomNavigationBar: TabBar(
-                tabs: <Widget>[
-                  Tab(
-                    icon: Column(
-                      children: [
-                        Icon(Icons.camera_alt),
-                        Text(
-                          'Scan',
-                          style: TextStyle(fontSize: 8),
-                        ),
-                      ],
+              bottomNavigationBar: Padding(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: TabBar(
+                  tabs: <Widget>[
+                    Tab(
+                      icon: Column(
+                        children: [
+                          Icon(Icons.camera_alt),
+                          Text(
+                            'Scan',
+                            style: TextStyle(fontSize: 8),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Tab(
-                    icon: Column(
-                      children: [
-                        Icon(Icons.store),
-                        Text(
-                          'Products',
-                          style: TextStyle(fontSize: 8),
-                        ),
-                      ],
+                    Tab(
+                      icon: Column(
+                        children: [
+                          Icon(Icons.store),
+                          Text(
+                            'Products',
+                            style: TextStyle(fontSize: 8),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Tab(
-                    icon: Column(
-                      children: [
-                        Icon(Icons.account_circle_rounded),
-                        Text(
-                          'Profile',
-                          style: TextStyle(fontSize: 8),
-                        ),
-                      ],
+                    Tab(
+                      icon: Column(
+                        children: [
+                          Icon(Icons.account_circle_rounded),
+                          Text(
+                            'Profile',
+                            style: TextStyle(fontSize: 8),
+                          ),
+                        ],
+                      ),
                     ),
+                  ],
+                  labelColor: Theme.of(context).accentColor,
+                  indicator: UnderlineTabIndicator(
+                    borderSide: BorderSide(
+                        color: Theme.of(context).accentColor, width: 0.0),
+                    insets: EdgeInsets.only(bottom: 52),
                   ),
-                ],
-                labelColor: Theme.of(context).accentColor,
-                indicator: UnderlineTabIndicator(
-                  borderSide: BorderSide(
-                      color: Theme.of(context).accentColor, width: 0.0),
-                  insets: EdgeInsets.only(bottom: 52),
+                  unselectedLabelColor: Colors.grey,
                 ),
-                unselectedLabelColor: Colors.grey,
               ),
               body: TabBarView(
                 children: <Widget>[

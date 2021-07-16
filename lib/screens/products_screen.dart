@@ -7,7 +7,7 @@ class ProductsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Products',
-          style: TextStyle(color: Colors.grey[50]),
+          style: TextStyle(color: Colors.white),
         ),
       ),
       body: Center(child: Text('View all products')),

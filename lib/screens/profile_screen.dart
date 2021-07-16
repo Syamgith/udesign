@@ -7,7 +7,7 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Profile',
-          style: TextStyle(color: Colors.grey),
+          style: TextStyle(color: Colors.white),
         ),
       ),
       body: Center(child: Text('Login or register')),
