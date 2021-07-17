@@ -10,30 +10,30 @@ class _ScanScreenState extends State<ScanScreen> {
   ArCoreController arCoreController;
 
   String objectSelected;
+  bool isRemote;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Udesign'),
-        ),
-        body: Stack(
-          children: <Widget>[
-            ArCoreView(
-              onArCoreViewCreated: _onArCoreViewCreated,
-              enableTapRecognizer: true,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Udesign'),
+      ),
+      body: Stack(
+        children: <Widget>[
+          ArCoreView(
+            onArCoreViewCreated: _onArCoreViewCreated,
+            enableTapRecognizer: true,
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: ListObjectSelection(
+              onTap: (value, remote) {
+                objectSelected = value;
+                isRemote = remote;
+              },
             ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: ListObjectSelection(
-                onTap: (value) {
-                  objectSelected = value;
-                },
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -44,16 +44,22 @@ class _ScanScreenState extends State<ScanScreen> {
     arCoreController.onPlaneTap = _handleOnPlaneTap;
   }
 
-  void _addToucano(ArCoreHitTestResult plane) {
+  void _addObject(ArCoreHitTestResult plane) {
     if (objectSelected != null) {
       //"https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/Duck/glTF/Duck.gltf"
-      final toucanoNode = ArCoreReferenceNode(
-          name: objectSelected,
-          object3DFileName: objectSelected,
-          position: plane.pose.translation,
-          rotation: plane.pose.rotation);
+      final node = isRemote
+          ? ArCoreReferenceNode(
+              name: objectSelected,
+              objectUrl: objectSelected,
+              position: plane.pose.translation,
+              rotation: plane.pose.rotation)
+          : ArCoreReferenceNode(
+              name: objectSelected,
+              object3DFileName: objectSelected,
+              position: plane.pose.translation,
+              rotation: plane.pose.rotation);
 
-      arCoreController.addArCoreNodeWithAnchor(toucanoNode);
+      arCoreController.addArCoreNodeWithAnchor(node);
     } else {
       showDialog<void>(
         context: context,
@@ -65,7 +71,7 @@ class _ScanScreenState extends State<ScanScreen> {
 
   void _handleOnPlaneTap(List<ArCoreHitTestResult> hits) {
     final hit = hits.first;
-    _addToucano(hit);
+    _addObject(hit);
   }
 
   void onTapHandler(String name) {
@@ -75,7 +81,7 @@ class _ScanScreenState extends State<ScanScreen> {
       builder: (BuildContext context) => AlertDialog(
         content: Row(
           children: <Widget>[
-            Text('Remove $name?'),
+            Text('Remove?'),
             IconButton(
                 icon: Icon(
                   Icons.delete,
@@ -108,15 +114,17 @@ class ListObjectSelection extends StatefulWidget {
 
 class _ListObjectSelectionState extends State<ListObjectSelection> {
   List<String> imageUrls = [
-    'http://4.bp.blogspot.com/-tsGDGlr87iY/T7A0g_AGs_I/AAAAAAAACgI/PTUgmoFOGXQ/s1600/Toco+toucan+Ramphastos+toco.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Android_robot.svg/1200px-Android_robot.svg.png',
-    'https://images.squarespace-cdn.com/content/v1/556323dee4b006bb6875f975/1612901885769-SW2M6UAY8ZVXKZRL11JB/Arctic%2BFox%252C%2BWhite%2Bon%2BWhite-2593%2Bcopy.jpg',
+    'https://i.pinimg.com/originals/cc/5e/31/cc5e311fba93e4d2da4a25f04e9bb212.png',
+    'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/GlamVelvetSofa/screenshot/screenshot.jpg',
+    'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/BoomBox/screenshot/screenshot.jpg',
+    'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/SheenChair/screenshot/screenshot.jpg',
   ];
 
   List<String> objectsFileName = [
-    'toucan.sfb',
-    'andy.sfb',
-    'artic_fox.sfb',
+    'couch.sfb',
+    'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/GlamVelvetSofa/glTF/GlamVelvetSofa.gltf',
+    'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/BoomBox/glTF/BoomBox.gltf',
+    'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/SheenChair/glTF/SheenChair.gltf'
   ];
 
   String selected;
@@ -138,7 +146,8 @@ class _ListObjectSelectionState extends State<ListObjectSelection> {
             onTap: () {
               setState(() {
                 selected = imageUrls[index];
-                widget.onTap(objectsFileName[index]);
+                var remote = index != 0;
+                widget.onTap(objectsFileName[index], remote);
               });
             },
             child: Card(
@@ -150,7 +159,7 @@ class _ListObjectSelectionState extends State<ListObjectSelection> {
               ),
               child: Container(
                 color: selected == imageUrls[index]
-                    ? Colors.red
+                    ? Theme.of(context).primaryColor
                     : Colors.transparent,
                 padding:
                     selected == imageUrls[index] ? EdgeInsets.all(8.0) : null,

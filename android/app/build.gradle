@@ -72,15 +72,15 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
 
-sceneform.asset('sampledata/Andy.obj',
-        'default',
-        'sampledata/Andy.sfa',
-        'src/main/assets/andy')
-
-// sceneform.asset('sampledata/TocoToucan.obj',
+// sceneform.asset('sampledata/Andy.obj',
 //         'default',
-//         'sampledata/TocoToucan.sfa',
-//         'src/main/assets/toucan')
+//         'sampledata/Andy.sfa',
+//         'src/main/assets/andy')
+
+sceneform.asset('sampledata/scaniverse-20210703-120826.obj',
+        'default',
+        'sampledata/scaniverse-20210703-120826.sfa',
+        'src/main/assets/couch')
 
 // sceneform.asset('sampledata/ArcticFox_Posed.obj',
 //         'default',
