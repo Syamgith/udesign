@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
+import 'package:udesign/components/drawer_widget.dart';
+import 'package:udesign/resources/style_resourses.dart';
 
 class ScanScreen extends StatefulWidget {
   @override
@@ -11,12 +13,19 @@ class _ScanScreenState extends State<ScanScreen> {
 
   String objectSelected;
   bool isRemote;
+  // bool showProducts = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: DrawerWidget(),
       appBar: AppBar(
-        title: const Text('Udesign'),
+        centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.white),
+        title: const Text(
+          'Udesign',
+          style: StyleResourse.AppBarTitleStyle,
+        ),
       ),
       body: Stack(
         children: <Widget>[
@@ -60,7 +69,15 @@ class _ScanScreenState extends State<ScanScreen> {
               rotation: plane.pose.rotation);
 
       arCoreController.addArCoreNodeWithAnchor(node);
+
+      // setState(() {
+      //   showProducts = false;
+      // });
     } else {
+      // setState(() {
+      //   showProducts = true;
+      // });
+
       showDialog<void>(
         context: context,
         builder: (BuildContext context) =>
@@ -137,7 +154,7 @@ class _ListObjectSelectionState extends State<ListObjectSelection> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 150.0,
+      height: 130.0,
       child: ListView.builder(
         itemCount: imageUrls.length,
         scrollDirection: Axis.horizontal,
