@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "51427864136",
+    "project_id": "udesign0001",
+    "storage_bucket": "udesign0001.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:51427864136:android:47349a0a977d48ba1f727d",
+        "android_client_info": {
+          "package_name": "com.example.udesign"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "51427864136-b4fkc4ik8n1s9t1ac2cf2g79q1n92n7q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyVWg47w72TdOUYD1yjiHokhxKq7gkg58"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "51427864136-b4fkc4ik8n1s9t1ac2cf2g79q1n92n7q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
