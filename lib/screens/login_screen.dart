@@ -30,7 +30,7 @@ class MyCustomFormState extends State<MyCustomForm> {
           child: TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              hintText: 'Email',
+              labelText: 'Email',
             ),
           ),
         ),

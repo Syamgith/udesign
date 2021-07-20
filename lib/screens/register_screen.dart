@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
+class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final appTitle = 'REGISTRATION';
-    return MaterialApp(
-      title: appTitle,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text(appTitle),
-        ),
-        body: MyCustomForm(),
+    final appTitle = 'Register';
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(appTitle),
       ),
+      body: MyCustomForm(),
     );
   }
 }
@@ -29,14 +24,14 @@ class MyCustomFormState extends State<MyCustomForm> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           child: TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              hintText: 'Username',
+              labelText: 'Name',
             ),
           ),
         ),
@@ -45,33 +40,34 @@ class MyCustomFormState extends State<MyCustomForm> {
           child: TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              hintText: 'Email',
+              labelText: 'Email',
             ),
           ),
         ),
         Padding(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              children: <Widget>[
-                TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                  ),
+          padding: EdgeInsets.all(10),
+          child: Column(
+            children: <Widget>[
+              TextField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Password',
                 ),
-              ],
-            )),
+              ),
+            ],
+          ),
+        ),
         Container(
+          padding: EdgeInsets.symmetric(horizontal: 10),
           height: 50,
           width: 350,
-          decoration: BoxDecoration(
-              color: Colors.blue, borderRadius: BorderRadius.circular(20)),
-          child: FlatButton(
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+          child: ElevatedButton(
             onPressed: () {},
             child: Text(
               'Register',
-              style: TextStyle(color: Colors.amber[400], fontSize: 25),
+              style: TextStyle(color: Colors.white, fontSize: 25),
             ),
           ),
         ),
