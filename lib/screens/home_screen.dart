@@ -4,13 +4,15 @@ import 'package:udesign/screens/profile_screen.dart';
 import 'package:udesign/screens/scan_screen.dart';
 
 class Home extends StatelessWidget {
+  final index;
+  Home({this.index = 0});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: null,
       body: DefaultTabController(
         length: 3,
-        initialIndex: 0,
+        initialIndex: index,
         child: Stack(
           children: <Widget>[
             Container(

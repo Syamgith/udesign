@@ -92,8 +92,8 @@ class MyCustomFormState extends State<MyCustomForm> {
         Utils.hideProgress(context);
         // SharedUtils.setString(Constants.DISPLAY_NAME, user.displayName);
         // SharedUtils.setString(Constants.UID, user.uid);
-        // Navigator.of(context)
-        //     .pushReplacement(MaterialPageRoute(builder: (context) => Home()));
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => Home(index: 2)));
         print(user.displayName);
       }
     } catch (e) {
