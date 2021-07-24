@@ -15,6 +15,7 @@ dependencies:
   arcore_flutter_plugin:
   firebase_core: ^1.4.0
   firebase_auth: ^3.0.1
+  flutter_colorpicker: 0.3.2
 
 dev_dependencies:
   flutter_test:
