@@ -47,51 +47,61 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             SizedBox(height: 16),
             Text("Name"),
+            SizedBox(height: 16),
+            Text("Email: "),
             Divider(),
             SizedBox(height: 16),
-            Card(
-              child: Column(
-                children: [
-                  ListTile(
-                    title: Center(child: Text('Select your favorite colors')),
-                    onTap: () {},
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+            Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
                     children: [
-                      IconButton(
-                          icon: Icon(
-                            Icons.circle,
-                            color: color1,
-                            size: 35,
-                          ),
-                          onPressed: () {
-                            selectColor(1);
-                          }),
-                      IconButton(
-                          icon: Icon(
-                            Icons.circle,
-                            color: color2,
-                            size: 35,
-                          ),
-                          onPressed: () {
-                            selectColor(2);
-                          }),
-                      IconButton(
-                          icon: Icon(
-                            Icons.circle,
-                            color: color3,
-                            size: 35,
-                          ),
-                          onPressed: () {
-                            selectColor(3);
-                          }),
+                      ListTile(
+                        title: Center(
+                            child: Text(
+                          'Pick your favorite colors',
+                          style: StyleResourse.AppBarTitleStyle,
+                        )),
+                        onTap: () {},
+                      ),
+                      SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                              icon: Icon(
+                                Icons.circle,
+                                color: color1,
+                                size: 35,
+                              ),
+                              onPressed: () {
+                                selectColor(1);
+                              }),
+                          IconButton(
+                              icon: Icon(
+                                Icons.circle,
+                                color: color2,
+                                size: 35,
+                              ),
+                              onPressed: () {
+                                selectColor(2);
+                              }),
+                          IconButton(
+                              icon: Icon(
+                                Icons.circle,
+                                color: color3,
+                                size: 35,
+                              ),
+                              onPressed: () {
+                                selectColor(3);
+                              }),
+                        ],
+                      ),
                     ],
                   ),
-                  ListTile(
-                    title: Text('fav items'),
-                  ),
-                ],
+                ),
               ),
             ),
           ],
