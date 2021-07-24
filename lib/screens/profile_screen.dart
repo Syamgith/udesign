@@ -11,7 +11,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  Color color1 = Colors.amber;
+  Color color1 = Colors.black;
   Color color2 = Colors.blue;
   Color color3 = Colors.red;
   @override
@@ -49,10 +49,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Text("Name"),
             SizedBox(height: 16),
             Text("Email: "),
-            Divider(),
             SizedBox(height: 16),
+            Divider(),
             Padding(
-              padding: const EdgeInsets.all(18.0),
+              padding: const EdgeInsets.all(16.0),
               child: Card(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
