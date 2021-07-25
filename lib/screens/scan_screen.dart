@@ -1,8 +1,9 @@
 import 'dart:io';
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
+import 'package:flutter/services.dart';
 import 'package:native_screenshot/native_screenshot.dart';
-import 'package:screenshot/screenshot.dart';
 import 'package:udesign/components/drawer_widget.dart';
 import 'package:udesign/resources/style_resourses.dart';
 import 'package:udesign/utils/utils.dart';
@@ -16,7 +17,6 @@ class ScanScreen extends StatefulWidget {
 
 class _ScanScreenState extends State<ScanScreen> {
   ArCoreController arCoreController;
-  ScreenshotController screenshotController = ScreenshotController();
   Widget _imgHolder;
 
   String objectSelected;
@@ -47,12 +47,9 @@ class _ScanScreenState extends State<ScanScreen> {
             ),
       body: Stack(
         children: <Widget>[
-          Screenshot(
-            controller: screenshotController,
-            child: ArCoreView(
-              onArCoreViewCreated: _onArCoreViewCreated,
-              enableTapRecognizer: true,
-            ),
+          ArCoreView(
+            onArCoreViewCreated: _onArCoreViewCreated,
+            enableTapRecognizer: true,
           ),
           Align(
             alignment: Alignment.topLeft,
@@ -86,9 +83,10 @@ class _ScanScreenState extends State<ScanScreen> {
             child: save
                 ? Container()
                 : IconButton(
+                    padding: EdgeInsets.all(10),
                     icon: Icon(
                       Icons.save,
-                      size: 30,
+                      size: 32,
                       color: Theme.of(context).primaryColor,
                     ),
                     onPressed: saveImage,
@@ -126,7 +124,7 @@ class _ScanScreenState extends State<ScanScreen> {
             Future.delayed((Duration(seconds: 1)), () => nativeSS()));
   }
 
-  Future<dynamic> showimgWidget(BuildContext context) {
+  Future<dynamic> showimgWidget(BuildContext context, imgFile) {
     return showDialog(
       useSafeArea: false,
       context: context,
@@ -134,12 +132,41 @@ class _ScanScreenState extends State<ScanScreen> {
         appBar: AppBar(
           title: Text("Your Design"),
         ),
-        body: Container(
-          constraints: BoxConstraints.expand(),
-          child: _imgHolder,
+        body: ListView(
+          children: [
+            Container(
+              padding: EdgeInsets.only(top: 16),
+              height: MediaQuery.of(context).size.height / 1.5,
+              //constraints: BoxConstraints.expand(),
+              child: _imgHolder,
+            ),
+            IconButton(
+                onPressed: () {
+                  _shareImage(imgFile);
+                },
+                icon: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Share'),
+                    Icon(Icons.share),
+                  ],
+                ))
+          ],
         ),
       ),
     );
+  }
+
+  Future<void> _shareImage(imgFile) async {
+    try {
+      final bytes1 = await imgFile.readAsBytes(); // Uint8List
+      final bytes = bytes1.buffer.asByteData(); // ByteData
+      await Share.file(
+          'Share image', 'esys.png', bytes.buffer.asUint8List(), 'image/png',
+          text: 'check out my pic.');
+    } catch (e) {
+      print('error: $e');
+    }
   }
 
   void nativeSS() async {
@@ -166,7 +193,7 @@ class _ScanScreenState extends State<ScanScreen> {
     save = false;
     widget.setHomeIcon(true);
     setState(() {});
-    showimgWidget(context);
+    showimgWidget(context, imgFile);
   }
 
   void _onArCoreViewCreated(ArCoreController controller) {

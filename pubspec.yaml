@@ -16,8 +16,8 @@ dependencies:
   firebase_core: ^1.4.0
   firebase_auth: ^3.0.1
   flutter_colorpicker: 0.3.2
-  screenshot:
   native_screenshot:
+  esys_flutter_share:
 
 dev_dependencies:
   flutter_test:
