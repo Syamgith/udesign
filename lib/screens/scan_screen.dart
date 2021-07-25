@@ -1,50 +1,172 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
+import 'package:native_screenshot/native_screenshot.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:udesign/components/drawer_widget.dart';
 import 'package:udesign/resources/style_resourses.dart';
+import 'package:udesign/utils/utils.dart';
 
 class ScanScreen extends StatefulWidget {
+  final Function setHomeIcon;
+  ScanScreen({this.setHomeIcon});
   @override
   _ScanScreenState createState() => _ScanScreenState();
 }
 
 class _ScanScreenState extends State<ScanScreen> {
   ArCoreController arCoreController;
+  ScreenshotController screenshotController = ScreenshotController();
+  Widget _imgHolder;
 
   String objectSelected;
   bool isRemote;
-  // bool showProducts = true;
+  bool showInstrutions = true;
+  bool save = false;
+  @override
+  void initState() {
+    super.initState();
+    _imgHolder = Center(
+      child: Icon(Icons.image),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: DrawerWidget(),
-      appBar: AppBar(
-        centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
-        title: const Text(
-          'Udesign',
-          style: StyleResourse.AppBarTitleStyle,
-        ),
-      ),
+      appBar: save
+          ? null
+          : AppBar(
+              centerTitle: true,
+              iconTheme: IconThemeData(color: Colors.white),
+              title: const Text(
+                'Udesign',
+                style: StyleResourse.AppBarTitleStyle,
+              ),
+            ),
       body: Stack(
         children: <Widget>[
-          ArCoreView(
-            onArCoreViewCreated: _onArCoreViewCreated,
-            enableTapRecognizer: true,
+          Screenshot(
+            controller: screenshotController,
+            child: ArCoreView(
+              onArCoreViewCreated: _onArCoreViewCreated,
+              enableTapRecognizer: true,
+            ),
           ),
           Align(
             alignment: Alignment.topLeft,
-            child: ListObjectSelection(
-              onTap: (value, remote) {
-                objectSelected = value;
-                isRemote = remote;
-              },
-            ),
+            child: save
+                ? Container()
+                : ListObjectSelection(
+                    onTap: (value, remote) {
+                      objectSelected = value;
+                      isRemote = remote;
+                    },
+                  ),
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: save
+                ? Container()
+                : Center(
+                    child: showInstrutions
+                        ? Text(
+                            'Detect a plane and tap on dots!',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          )
+                        : Container(),
+                  ),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: save
+                ? Container()
+                : IconButton(
+                    icon: Icon(
+                      Icons.save,
+                      size: 30,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    onPressed: saveImage,
+                  ),
           ),
         ],
       ),
     );
+  }
+
+  void saveImage() {
+    save = true;
+    widget.setHomeIcon(false);
+    showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                backgroundColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                content: Text(
+                  "Capture and Save",
+                  style: StyleResourse.primaryTitleStyle,
+                ),
+                actions: [
+                  TextButton(
+                      child: Text("OK"),
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                      })
+                ],
+              );
+            })
+        .then((value) =>
+            Future.delayed((Duration(seconds: 1)), () => nativeSS()));
+  }
+
+  Future<dynamic> showimgWidget(BuildContext context) {
+    return showDialog(
+      useSafeArea: false,
+      context: context,
+      builder: (context) => Scaffold(
+        appBar: AppBar(
+          title: Text("Your Design"),
+        ),
+        body: Container(
+          constraints: BoxConstraints.expand(),
+          child: _imgHolder,
+        ),
+      ),
+    );
+  }
+
+  void nativeSS() async {
+    String path = await NativeScreenshot.takeScreenshot();
+
+    debugPrint('Screenshot taken, path: $path');
+
+    if (path == null || path.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Error saving image :('),
+        backgroundColor: Colors.red,
+      )); // showSnackBar()
+      save = false;
+      widget.setHomeIcon(true);
+      return;
+    } // if error
+
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('The image has been saved to: $path')));
+
+    File imgFile = File(path);
+    _imgHolder = Image.file(imgFile);
+
+    save = false;
+    widget.setHomeIcon(true);
+    setState(() {});
+    showimgWidget(context);
   }
 
   void _onArCoreViewCreated(ArCoreController controller) {
@@ -55,6 +177,7 @@ class _ScanScreenState extends State<ScanScreen> {
 
   void _addObject(ArCoreHitTestResult plane) {
     if (objectSelected != null) {
+      Utils.showLoadingModel(context);
       //"https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/Duck/glTF/Duck.gltf"
       final node = isRemote
           ? ArCoreReferenceNode(
@@ -68,21 +191,15 @@ class _ScanScreenState extends State<ScanScreen> {
               position: plane.pose.translation,
               rotation: plane.pose.rotation);
 
-      arCoreController.addArCoreNodeWithAnchor(node);
+      arCoreController
+          .addArCoreNodeWithAnchor(node)
+          .then((value) => Utils.hideProgress(context));
 
-      // setState(() {
-      //   showProducts = false;
-      // });
+      setState(() {
+        showInstrutions = false;
+      });
     } else {
-      // setState(() {
-      //   showProducts = true;
-      // });
-
-      showDialog<void>(
-        context: context,
-        builder: (BuildContext context) =>
-            AlertDialog(content: Text('Select an object!')),
-      );
+      Utils.popUpDelayed(context, "Select a Product");
     }
   }
 
