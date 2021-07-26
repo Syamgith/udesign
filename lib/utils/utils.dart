@@ -59,7 +59,11 @@ class Utils {
             Navigator.of(context).pop(true);
           });
           return AlertDialog(
-            content: Text(text),
+            backgroundColor: Colors.black,
+            content: Text(
+              text,
+              style: StyleResourse.primaryTitleStyle,
+            ),
           );
         });
   }

@@ -11,7 +11,8 @@ import 'package:udesign/utils/utils.dart';
 
 class ScanScreen extends StatefulWidget {
   final Function setHomeIcon;
-  ScanScreen({this.setHomeIcon});
+  Product selectedProd;
+  ScanScreen({this.setHomeIcon, this.selectedProd});
   @override
   _ScanScreenState createState() => _ScanScreenState();
 }
@@ -19,7 +20,6 @@ class ScanScreen extends StatefulWidget {
 class _ScanScreenState extends State<ScanScreen> {
   ArCoreController arCoreController;
   Widget _imgHolder;
-
   Product objectSelected;
   bool showInstrutions = true;
   bool save = false;
@@ -29,6 +29,7 @@ class _ScanScreenState extends State<ScanScreen> {
     _imgHolder = Center(
       child: Icon(Icons.image),
     );
+    objectSelected = widget.selectedProd ?? null;
   }
 
   @override
@@ -53,7 +54,7 @@ class _ScanScreenState extends State<ScanScreen> {
           ),
           Align(
             alignment: Alignment.topLeft,
-            child: save
+            child: save || widget.selectedProd != null
                 ? Container()
                 : ListObjectSelection(
                     onTap: (prod) {
@@ -260,5 +261,8 @@ class _ScanScreenState extends State<ScanScreen> {
   void dispose() {
     arCoreController.dispose();
     super.dispose();
+    if (widget.selectedProd != null) {
+      widget.selectedProd = null;
+    }
   }
 }

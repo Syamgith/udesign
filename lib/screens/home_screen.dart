@@ -5,7 +5,8 @@ import 'package:udesign/screens/scan_screen.dart';
 
 class Home extends StatefulWidget {
   final index;
-  Home({this.index = 0});
+  final selectedProduct;
+  Home({this.index = 0, this.selectedProduct});
 
   @override
   _HomeState createState() => _HomeState();
@@ -86,6 +87,7 @@ class _HomeState extends State<Home> {
                 children: <Widget>[
                   ScanScreen(
                     setHomeIcon: setShowIcon,
+                    selectedProd: widget.selectedProduct ?? null,
                   ),
                   ProductsScreen(),
                   ProfileScreen(),
