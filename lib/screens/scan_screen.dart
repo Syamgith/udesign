@@ -2,9 +2,10 @@ import 'dart:io';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
-import 'package:flutter/services.dart';
 import 'package:native_screenshot/native_screenshot.dart';
 import 'package:udesign/components/drawer_widget.dart';
+import 'package:udesign/components/list_object_selection.dart';
+import 'package:udesign/models/product_model.dart';
 import 'package:udesign/resources/style_resourses.dart';
 import 'package:udesign/utils/utils.dart';
 
@@ -19,8 +20,7 @@ class _ScanScreenState extends State<ScanScreen> {
   ArCoreController arCoreController;
   Widget _imgHolder;
 
-  String objectSelected;
-  bool isRemote;
+  Product objectSelected;
   bool showInstrutions = true;
   bool save = false;
   @override
@@ -56,9 +56,8 @@ class _ScanScreenState extends State<ScanScreen> {
             child: save
                 ? Container()
                 : ListObjectSelection(
-                    onTap: (value, remote) {
-                      objectSelected = value;
-                      isRemote = remote;
+                    onTap: (prod) {
+                      objectSelected = prod;
                     },
                   ),
           ),
@@ -69,7 +68,7 @@ class _ScanScreenState extends State<ScanScreen> {
                 : Center(
                     child: showInstrutions
                         ? Text(
-                            'Detect a plane and tap on dots!',
+                            'Detect a plane and tap on dotted plane.',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -93,6 +92,67 @@ class _ScanScreenState extends State<ScanScreen> {
                   ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _onArCoreViewCreated(ArCoreController controller) {
+    arCoreController = controller;
+    arCoreController.onNodeTap = (name) => onTapHandler(name);
+    arCoreController.onPlaneTap = _handleOnPlaneTap;
+  }
+
+  void _addObject(ArCoreHitTestResult plane) {
+    if (objectSelected != null) {
+      Utils.showLoadingModel(context);
+      //"https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/Duck/glTF/Duck.gltf"
+      final node = objectSelected.model.isRemote
+          ? ArCoreReferenceNode(
+              name: objectSelected.title,
+              objectUrl: objectSelected.model.address,
+              position: plane.pose.translation,
+              rotation: plane.pose.rotation)
+          : ArCoreReferenceNode(
+              name: objectSelected.title,
+              object3DFileName: objectSelected.model.address,
+              position: plane.pose.translation,
+              rotation: plane.pose.rotation);
+
+      arCoreController
+          .addArCoreNodeWithAnchor(node)
+          .then((value) => Utils.hideProgress(context));
+
+      setState(() {
+        showInstrutions = false;
+      });
+    } else {
+      Utils.popUpDelayed(context, "Select a Product");
+    }
+  }
+
+  void _handleOnPlaneTap(List<ArCoreHitTestResult> hits) {
+    final hit = hits.first;
+    _addObject(hit);
+  }
+
+  void onTapHandler(String name) {
+    print("Flutter: onNodeTap");
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        content: Row(
+          children: <Widget>[
+            Text('Remove?'),
+            IconButton(
+                icon: Icon(
+                  Icons.delete,
+                ),
+                onPressed: () {
+                  arCoreController.removeNode(nodeName: name);
+                  Navigator.pop(context);
+                })
+          ],
+        ),
       ),
     );
   }
@@ -196,140 +256,9 @@ class _ScanScreenState extends State<ScanScreen> {
     showimgWidget(context, imgFile);
   }
 
-  void _onArCoreViewCreated(ArCoreController controller) {
-    arCoreController = controller;
-    arCoreController.onNodeTap = (name) => onTapHandler(name);
-    arCoreController.onPlaneTap = _handleOnPlaneTap;
-  }
-
-  void _addObject(ArCoreHitTestResult plane) {
-    if (objectSelected != null) {
-      Utils.showLoadingModel(context);
-      //"https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/Duck/glTF/Duck.gltf"
-      final node = isRemote
-          ? ArCoreReferenceNode(
-              name: objectSelected,
-              objectUrl: objectSelected,
-              position: plane.pose.translation,
-              rotation: plane.pose.rotation)
-          : ArCoreReferenceNode(
-              name: objectSelected,
-              object3DFileName: objectSelected,
-              position: plane.pose.translation,
-              rotation: plane.pose.rotation);
-
-      arCoreController
-          .addArCoreNodeWithAnchor(node)
-          .then((value) => Utils.hideProgress(context));
-
-      setState(() {
-        showInstrutions = false;
-      });
-    } else {
-      Utils.popUpDelayed(context, "Select a Product");
-    }
-  }
-
-  void _handleOnPlaneTap(List<ArCoreHitTestResult> hits) {
-    final hit = hits.first;
-    _addObject(hit);
-  }
-
-  void onTapHandler(String name) {
-    print("Flutter: onNodeTap");
-    showDialog<void>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        content: Row(
-          children: <Widget>[
-            Text('Remove?'),
-            IconButton(
-                icon: Icon(
-                  Icons.delete,
-                ),
-                onPressed: () {
-                  arCoreController.removeNode(nodeName: name);
-                  Navigator.pop(context);
-                })
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   void dispose() {
     arCoreController.dispose();
     super.dispose();
-  }
-}
-
-class ListObjectSelection extends StatefulWidget {
-  final Function onTap;
-
-  ListObjectSelection({this.onTap});
-
-  @override
-  _ListObjectSelectionState createState() => _ListObjectSelectionState();
-}
-
-class _ListObjectSelectionState extends State<ListObjectSelection> {
-  List<String> imageUrls = [
-    'https://i.pinimg.com/originals/cc/5e/31/cc5e311fba93e4d2da4a25f04e9bb212.png',
-    'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/GlamVelvetSofa/screenshot/screenshot.jpg',
-    'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/BoomBox/screenshot/screenshot.jpg',
-    'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/SheenChair/screenshot/screenshot.jpg',
-  ];
-
-  List<String> objectsFileName = [
-    'couch.sfb',
-    'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/GlamVelvetSofa/glTF/GlamVelvetSofa.gltf',
-    'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/BoomBox/glTF/BoomBox.gltf',
-    'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/SheenChair/glTF/SheenChair.gltf'
-  ];
-
-  String selected;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 130.0,
-      child: ListView.builder(
-        itemCount: imageUrls.length,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                selected = imageUrls[index];
-                var remote = index != 0;
-                widget.onTap(objectsFileName[index], remote);
-              });
-            },
-            child: Card(
-              elevation: 4.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
-                ),
-              ),
-              child: Container(
-                color: selected == imageUrls[index]
-                    ? Theme.of(context).primaryColor
-                    : Colors.transparent,
-                padding:
-                    selected == imageUrls[index] ? EdgeInsets.all(8.0) : null,
-                child: Image.network(imageUrls[index]),
-              ),
-            ),
-          );
-        },
-      ),
-    );
   }
 }

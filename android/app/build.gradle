@@ -85,10 +85,10 @@ sceneform.asset('sampledata/scaniverse-20210703-120826.obj',
         'sampledata/scaniverse-20210703-120826.sfa',
         'src/main/assets/couch')
 
-// sceneform.asset('sampledata/ArcticFox_Posed.obj',
-//         'default',
-//         'sampledata/ArcticFox_Posed.sfa',
-//         'src/main/assets/artic_fox')
+sceneform.asset('sampledata/rv_table_with_vase.obj',
+        'default',
+        'sampledata/rv_table_with_vase.sfa',
+        'src/main/assets/rv_table_with_vase')
 
 // sceneform.asset('sampledata/fox_face.fbx',
 //         'sampledata/fox_face_material.mat',
