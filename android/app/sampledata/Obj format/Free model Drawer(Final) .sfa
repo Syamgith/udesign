@@ -1,0 +1,43 @@
+{
+  materials: [
+    {
+      name: 'Free_Drawer__textures',
+      parameters: [
+        {
+          baseColor: null,
+        },
+        {
+          baseColorTint: [
+            0.64000000000000001,
+            0.64000000000000001,
+            0.64000000000000001,
+            1,
+          ],
+        },
+        {
+          metallic: 1,
+        },
+        {
+          roughness: 0.14280000000000001,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/obj_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+    ],
+    collision: {},
+    file: 'sampledata/Obj format/Free model Drawer(Final) .obj',
+    name: 'Free model Drawer(Final) ',
+    recenter: 'root',
+    scale: 0.41805999999999999,
+  },
+  version: '0.54:2',
+}

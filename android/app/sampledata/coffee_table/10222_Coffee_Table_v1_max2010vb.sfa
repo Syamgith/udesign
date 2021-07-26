@@ -1,0 +1,79 @@
+{
+  materials: [
+    {
+      name: '10222_Coffee_Table_v1',
+      parameters: [
+        {
+          baseColor: '10222_Coffee_Table_v1_Diffuse',
+        },
+        {
+          baseColorTint: [
+            0.58819999999999995,
+            0.58819999999999995,
+            0.58819999999999995,
+            1,
+          ],
+        },
+        {
+          metallic: 1,
+        },
+        {
+          roughness: 0.408248,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/obj_material.sfm',
+    },
+    {
+      name: '10222_Coffee_Table_v1_glass',
+      parameters: [
+        {
+          baseColor: null,
+        },
+        {
+          baseColorTint: [
+            0.58819999999999995,
+            0.58819999999999995,
+            0.58819999999999995,
+            1,
+          ],
+        },
+        {
+          metallic: 1,
+        },
+        {
+          roughness: 0.408248,
+        },
+        {
+          opacity: 0.5,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/obj_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+    ],
+    collision: {},
+    file: 'sampledata/coffee_table/10222_Coffee_Table_v1_max2010vb.obj',
+    name: '10222_Coffee_Table_v1_max2010vb',
+    recenter: 'root',
+    scale: 0.027778000000000001,
+  },
+  samplers: [
+    {
+      file: 'sampledata/coffee_table/10222_Coffee_Table_v1_Diffuse.jpg',
+      name: '10222_Coffee_Table_v1_Diffuse',
+      params: {
+        usage_type: 'Data',
+      },
+      pipeline_name: '10222_Coffee_Table_v1_Diffuse.jpg',
+    },
+  ],
+  version: '0.54:2',
+}

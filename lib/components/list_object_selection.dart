@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:udesign/models/product_model.dart';
+import 'package:udesign/resources/product_datas.dart';
 
 class ListObjectSelection extends StatefulWidget {
   final Function onTap;
@@ -11,49 +12,7 @@ class ListObjectSelection extends StatefulWidget {
 }
 
 class _ListObjectSelectionState extends State<ListObjectSelection> {
-  // List<String> imageUrls = [
-  //   'https://i.pinimg.com/originals/cc/5e/31/cc5e311fba93e4d2da4a25f04e9bb212.png',
-  //   'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/GlamVelvetSofa/screenshot/screenshot.jpg',
-  //   'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/BoomBox/screenshot/screenshot.jpg',
-  //   'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/SheenChair/screenshot/screenshot.jpg',
-  // ];
-
-  // List<String> objectsFileName = [
-  //   'couch.sfb',
-  //   // 'rv_table_with_vase.sfb',
-  //   'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/GlamVelvetSofa/glTF/GlamVelvetSofa.gltf',
-  //   'https://github.com/pmndrs/market-assets/raw/main/files/models/apple/model.gltf',
-  //   'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/SheenChair/glTF/SheenChair.gltf',
-  // ];
-
-  List<Product> _productsList = [
-    Product(
-        title: 'Coloured Sofa',
-        imgUrl:
-            'https://i.pinimg.com/originals/cc/5e/31/cc5e311fba93e4d2da4a25f04e9bb212.png',
-        model: Model3D(
-          address: 'couch.sfb',
-        )),
-    Product(
-        title: 'Glam Sofa',
-        imgUrl:
-            'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/GlamVelvetSofa/screenshot/screenshot.jpg',
-        model: Model3D(
-          address:
-              'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/GlamVelvetSofa/glTF/GlamVelvetSofa.gltf',
-          isRemote: true,
-        )),
-    Product(
-        title: 'Sheen Chair',
-        imgUrl:
-            'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/SheenChair/screenshot/screenshot.jpg',
-        model: Model3D(
-          address:
-              'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/SheenChair/glTF/SheenChair.gltf',
-          isRemote: true,
-        )),
-  ];
-
+  final _productsList = ProductDatas.productsList;
   Product selected;
 
   @override
