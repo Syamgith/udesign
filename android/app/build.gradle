@@ -84,40 +84,16 @@ sceneform.asset('sampledata/scaniverse-20210703-120826.obj',
         'sampledata/scaniverse-20210703-120826.sfa',
         'src/main/assets/couch')
 
-sceneform.asset('sampledata/rv_table_with_vase.obj',
-        'default',
-        'sampledata/rv_table_with_vase.sfa',
-        'src/main/assets/rv_table_with_vase')
-
-
-sceneform.asset('sampledata/Wal_Clok/Wal_Clok.obj',
-        'default',
-        'sampledata/Wal_Clok/Wal_Clok.sfa',
-        'src/main/assets/Wal_Clok')
-sceneform.asset('sampledata/tv_table/table.obj',
-        'default',
-        'sampledata/tv_table/table.sfa',
-        'src/main/assets/table')
 sceneform.asset('sampledata/tredmill/Treadmill OBJ.obj',
         'default',
         'sampledata/tredmill/Treadmill OBJ.sfa',
         'src/main/assets/tredmill')
-sceneform.asset('sampledata/table/TABLE.obj',
-        'default',
-        'sampledata/table/TABLE.sfa',
-        'src/main/assets/table2')
-sceneform.asset('sampledata/stylish_desk/StylishDesk.obj',
-        'default',
-        'sampledata/stylish_desk/StylishDesk.sfa',
-        'src/main/assets/StylishDesk')
+
 sceneform.asset('sampledata/sofa/sofa.obj',
         'default',
         'sampledata/sofa/sofa.sfa',
         'src/main/assets/sofa')
-sceneform.asset('sampledata/school_chair/school chair.obj',
-        'default',
-        'sampledata/school_chair/school chair.sfa',
-        'src/main/assets/school_chair')
+
 sceneform.asset('sampledata/potted_plant/potted_plant_obj.obj',
         'default',
         'sampledata/potted_plant/potted_plant_obj.sfa',
@@ -126,55 +102,18 @@ sceneform.asset('sampledata/piano/Piano.obj',
         'default',
         'sampledata/piano/Piano.sfa',
         'src/main/assets/piano')
-sceneform.asset('sampledata/mac/mac laptop.obj',
-        'default',
-        'sampledata/mac/mac laptop.sfa',
-        'src/main/assets/mac')
-sceneform.asset('sampledata/coffee_table/10222_Coffee_Table_v1_max2010vb.obj',
-        'default',
-        'sampledata/coffee_table/10222_Coffee_Table_v1_max2010vb.sfa',
-        'src/main/assets/coffee_table')
-sceneform.asset('sampledata/chair/Chair.obj',
-        'default',
-        'sampledata/chair/Chair.sfa',
-        'src/main/assets/chair')
+
 sceneform.asset('sampledata/ceiling_fan/Ceiling Fan.obj',
         'default',
         'sampledata/ceiling_fan/Ceiling Fan.sfa',
         'src/main/assets/ceiling_fan')
-sceneform.asset('sampledata/clock1/clock1.obj',
-        'default',
-        'sampledata/clock1/clock1.sfa',
-        'src/main/assets/clock1')
-sceneform.asset("sampledata/Monitor Curved/Monitor 27' Curved.obj",
-        'default',
-        "sampledata/Monitor Curved/Monitor 27' Curved.sfa",
-        'src/main/assets/monitor')
-sceneform.asset('sampledata/Obj format/Free model Drawer(Final) .obj',
-        'default',
-        'sampledata/Obj format/Free model Drawer(Final) .sfa',
-        'src/main/assets/freemodel')
-sceneform.asset('sampledata/a_wallC/Wall Clock.obj',
-        'default',
-        'sampledata/a_wallC/Wall Clock.sfa',
-        'src/main/assets/wallclock')
-// sceneform.asset('sampledata/a_polyster/Polyester Masa Lambas�-Free3D.obj',
-//         'default',
-//         'sampledata/a_polyster/Polyester Masa Lambas�-Free3D.sfa',
-//         'src/main/assets/lamp')
+
 sceneform.asset('sampledata/a_light/eb_sconce_light_01.obj',
         'default',
         'sampledata/a_light/eb_sconce_light_01.sfa',
         'src/main/assets/light')
-sceneform.asset('sampledata/a_lampara/lampara escritorio.obj',
-        'default',
-        'sampledata/a_lampara/lampara escritorio.sfa',
-        'src/main/assets/lamp2')
+
 sceneform.asset('sampledata/a_lamb/eb_lamp_01.obj',
         'default',
         'sampledata/a_lamb/eb_lamp_01.sfa',
         'src/main/assets/lamp3')
-sceneform.asset('sampledata/a_clock/westclox.obj',
-        'default',
-        'sampledata/a_clock/westclox.sfa',
-        'src/main/assets/clock2')
