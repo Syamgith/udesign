@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:udesign/models/product_model.dart';
 import 'package:udesign/resources/product_datas.dart';
+import 'package:udesign/resources/style_resourses.dart';
+import 'package:udesign/screens/home_screen.dart';
+import 'package:udesign/utils/utils.dart';
 
 class ListObjectSelection extends StatefulWidget {
   final Function onTap;
@@ -23,38 +26,107 @@ class _ListObjectSelectionState extends State<ListObjectSelection> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 130.0,
-      child: ListView.builder(
-        itemCount: _productsList.length,
+      height: MediaQuery.of(context).size.height / 6,
+      child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                selected = _productsList[index];
-
-                widget.onTap(_productsList[index]);
-              });
-            },
-            child: Card(
-              elevation: 4.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
+        child: Row(
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width / 3.5,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => Home(
+                            index: 1,
+                          )));
+                },
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  elevation: 4.0,
+                  margin: EdgeInsets.all(4.0),
+                  child: Container(
+                    child: Center(
+                      child: Text(
+                        'See all\nProducts',
+                        textAlign: TextAlign.center,
+                        style: StyleResourse.regularLargeStyle,
+                      ),
+                    ),
+                  ),
                 ),
               ),
-              child: Container(
-                color: selected == _productsList[index]
-                    ? Theme.of(context).primaryColor
-                    : Colors.transparent,
-                padding: selected == _productsList[index]
-                    ? EdgeInsets.all(8.0)
-                    : null,
-                child: Image.network(_productsList[index].imgUrl),
+            ),
+            ListView.builder(
+              itemCount: _productsList.length,
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selected = _productsList[index];
+
+                      widget.onTap(_productsList[index]);
+                    });
+                  },
+                  child: Card(
+                    elevation: 4.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                    child: Container(
+                      // width: MediaQuery.of(context).size.width / 3,
+                      color: selected == _productsList[index]
+                          ? Theme.of(context).primaryColor
+                          : Colors.transparent,
+                      padding: selected == _productsList[index]
+                          ? EdgeInsets.all(8.0)
+                          : null,
+                      child: Image.network(_productsList[index].imgUrl),
+                    ),
+                  ),
+                );
+              },
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width / 3,
+              child: GestureDetector(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return Center(
+                            child: Text(
+                          'recommendation',
+                          style: StyleResourse.primaryTitleStyle,
+                        ));
+                      });
+                },
+                child: Card(
+                  elevation: 4.0,
+                  margin: EdgeInsets.all(4.0),
+                  child: Container(
+                    child: Center(
+                      child: Text(
+                        'Click for Recommended Products',
+                        textAlign: TextAlign.center,
+                        style: StyleResourse.regularLargeStyle,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
-          );
-        },
+          ],
+        ),
       ),
     );
   }
