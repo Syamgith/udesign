@@ -137,25 +137,25 @@ class _ScanScreenState extends State<ScanScreen> {
   }
 
   void onTapHandler(String name) {
-    print("Flutter: onNodeTap");
-    showDialog<void>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        content: Row(
-          children: <Widget>[
-            Text('Remove?'),
-            IconButton(
-                icon: Icon(
-                  Icons.delete,
-                ),
-                onPressed: () {
-                  arCoreController.removeNode(nodeName: name);
-                  Navigator.pop(context);
-                })
-          ],
-        ),
-      ),
-    );
+    // print("Flutter: onNodeTap");
+    // showDialog<void>(
+    //   context: context,
+    //   builder: (BuildContext context) => AlertDialog(
+    //     content: Row(
+    //       children: <Widget>[
+    //         Text('Remove?'),
+    //         IconButton(
+    //             icon: Icon(
+    //               Icons.delete,
+    //             ),
+    //             onPressed: () {
+    //               arCoreController.dispose();
+    //               Navigator.pop(context);
+    //             })
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 
   void saveImage() {
