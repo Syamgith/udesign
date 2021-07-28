@@ -152,7 +152,7 @@ class MyCustomFormState extends State<MyCustomForm> {
           .user;
       if (user != null) {
         Utils.hideProgress(context);
-
+        FirebaseAuth.instance.setPersistence(Persistence.SESSION);
         Utils.setBool('registered', true);
         Utils.setString('name', user.displayName);
         Utils.setString('email', user.email);

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:udesign/models/user_model.dart';
@@ -25,11 +26,25 @@ class _HomeState extends State<Home> {
     setState(() {});
   }
 
+  @override
+  void initState() {
+    getDetails();
+    super.initState();
+  }
+
   void getDetails() async {
+    // final user = FirebaseAuth.instance.currentUser;
     final name = await Utils.getString('name');
     final email = await Utils.getString('email');
     final registered = await Utils.getBool('registered');
-
+    // var name = '';
+    // var email = '';
+    // var registered = false;
+    // if (user != null) {
+    //   name = user.displayName;
+    //   email = user.email;
+    //   registered = true;
+    // }
     Provider.of<UserModel>(context, listen: false)
         .setNewUser(name, email, registered);
   }
@@ -37,7 +52,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () {
+      onWillPop: () async {
         exit(0);
       },
       child: Scaffold(
