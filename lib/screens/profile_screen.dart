@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:provider/provider.dart';
-import 'package:udesign/components/drawer_widget.dart';
 import 'package:udesign/models/user_model.dart';
 import 'package:udesign/resources/style_resourses.dart';
 import 'package:udesign/screens/login_screen.dart';
@@ -10,8 +9,7 @@ import 'package:udesign/screens/register_screen.dart';
 import 'package:udesign/utils/utils.dart';
 
 class ProfileScreen extends StatefulWidget {
-  UserModel user;
-  ProfileScreen({this.user});
+  ProfileScreen();
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -20,25 +18,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Color color1 = Colors.black;
   Color color2 = Colors.blue;
   Color color3 = Colors.red;
-  String name = '';
-  String email = '';
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getDetails();
-  }
-
-  void getDetails() async {
-    name = await Utils.getString('name');
-    email = await Utils.getString('email');
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: DrawerWidget(),
         appBar: AppBar(
             centerTitle: true,
             iconTheme: IconThemeData(color: Colors.white),
@@ -63,97 +52,91 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
               )
             ]),
-        body: FutureBuilder<bool>(
-            future: Utils.getBool('registered'),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return snapshot.data ? userUI(context) : guestUI((context));
-              } else {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            }));
+        body: Consumer<UserModel>(builder: (context, user, _) {
+          return user.registered ? userUI(context) : guestUI((context));
+        }));
   }
 
   Widget userUI(context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              radius: MediaQuery.of(context).size.width / 4,
-              child: Text(
-                name,
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+    return Consumer<UserModel>(builder: (context, user, _) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: MediaQuery.of(context).size.width / 4,
+                child: Text(
+                  user.name,
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-            SizedBox(height: 16),
-            Text(name),
-            SizedBox(height: 16),
-            Text("Email: $email"),
-            SizedBox(height: 16),
-            Divider(),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        title: Center(
-                            child: Text(
-                          'Pick your favorite colors',
-                          style: StyleResourse.AppBarTitleStyle,
-                        )),
-                        onTap: () {},
-                      ),
-                      SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                              icon: Icon(
-                                Icons.circle,
-                                color: color1,
-                                size: 35,
-                              ),
-                              onPressed: () {
-                                selectColor(1);
-                              }),
-                          IconButton(
-                              icon: Icon(
-                                Icons.circle,
-                                color: color2,
-                                size: 35,
-                              ),
-                              onPressed: () {
-                                selectColor(2);
-                              }),
-                          IconButton(
-                              icon: Icon(
-                                Icons.circle,
-                                color: color3,
-                                size: 35,
-                              ),
-                              onPressed: () {
-                                selectColor(3);
-                              }),
-                        ],
-                      ),
-                    ],
+              SizedBox(height: 16),
+              Text(user.name),
+              SizedBox(height: 16),
+              Text("Email: ${user.email}"),
+              SizedBox(height: 16),
+              Divider(),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          title: Center(
+                              child: Text(
+                            'Pick your favorite colors',
+                            style: StyleResourse.AppBarTitleStyle,
+                          )),
+                          onTap: () {},
+                        ),
+                        SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                                icon: Icon(
+                                  Icons.circle,
+                                  color: color1,
+                                  size: 35,
+                                ),
+                                onPressed: () {
+                                  selectColor(1);
+                                }),
+                            IconButton(
+                                icon: Icon(
+                                  Icons.circle,
+                                  color: color2,
+                                  size: 35,
+                                ),
+                                onPressed: () {
+                                  selectColor(2);
+                                }),
+                            IconButton(
+                                icon: Icon(
+                                  Icons.circle,
+                                  color: color3,
+                                  size: 35,
+                                ),
+                                onPressed: () {
+                                  selectColor(3);
+                                }),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   void selectColor(i) {

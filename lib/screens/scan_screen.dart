@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 import 'package:native_screenshot/native_screenshot.dart';
 import 'package:provider/provider.dart';
-import 'package:udesign/components/drawer_widget.dart';
 import 'package:udesign/components/list_object_selection.dart';
 import 'package:udesign/models/product_model.dart';
 import 'package:udesign/models/user_model.dart';
@@ -40,7 +39,6 @@ class _ScanScreenState extends State<ScanScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: DrawerWidget(),
       appBar: save
           ? null
           : AppBar(

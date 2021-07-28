@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:udesign/components/drawer_widget.dart';
 import 'package:udesign/components/product_card.dart';
 import 'package:udesign/components/recommeded_view.dart';
 import 'package:udesign/models/user_model.dart';
@@ -13,7 +12,6 @@ class ProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: DrawerWidget(),
       appBar: AppBar(
         centerTitle: true,
         iconTheme: IconThemeData(color: Colors.white),

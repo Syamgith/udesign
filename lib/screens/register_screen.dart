@@ -185,20 +185,21 @@ class MyCustomFormState extends State<MyCustomForm> {
       ))
           .user;
       if (user != null) {
-        Utils.hideProgress(context);
-
         await FirebaseAuth.instance.currentUser
             .updateDisplayName(userNameController.text);
+        Utils.hideProgress(context);
+
         Utils.setBool('registered', true);
-        Utils.setString('name', user.displayName);
-        Utils.setString('email', user.email);
+        Utils.setString('name', userNameController.text);
+        Utils.setString('email', emailController.text);
+
         Provider.of<UserModel>(context, listen: false)
-            .setNewUser(user.displayName, user.email, true);
-        setState(() {});
+            .setNewUser(userNameController.text, emailController.text, true);
+
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => Home(index: 2)));
-
         createUserInFireStore();
+        print(user.displayName);
       }
     } catch (e) {
       Utils.hideProgress(context);
