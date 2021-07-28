@@ -22,7 +22,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => UserModel(),
-      child: MaterialApp(
+      builder: (context, _) => MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(primarySwatch: Colors.amber),
         home: Scaffold(

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
+import 'package:flutter/services.dart';
 import 'package:native_screenshot/native_screenshot.dart';
 import 'package:provider/provider.dart';
 import 'package:udesign/components/list_object_selection.dart';
@@ -153,25 +154,25 @@ class _ScanScreenState extends State<ScanScreen> {
   }
 
   void onTapHandler(String name) {
-    // print("Flutter: onNodeTap");
-    // showDialog<void>(
-    //   context: context,
-    //   builder: (BuildContext context) => AlertDialog(
-    //     content: Row(
-    //       children: <Widget>[
-    //         Text('Remove?'),
-    //         IconButton(
-    //             icon: Icon(
-    //               Icons.delete,
-    //             ),
-    //             onPressed: () {
-    //               arCoreController.dispose();
-    //               Navigator.pop(context);
-    //             })
-    //       ],
-    //     ),
-    //   ),
-    // );
+    print("Flutter: onNodeTap");
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        content: Row(
+          children: <Widget>[
+            Text('Remove?'),
+            IconButton(
+                icon: Icon(
+                  Icons.delete,
+                ),
+                onPressed: () {
+                  arCoreController.dispose();
+                  Navigator.pop(context);
+                })
+          ],
+        ),
+      ),
+    );
   }
 
   void saveImage() {
@@ -282,9 +283,11 @@ class _ScanScreenState extends State<ScanScreen> {
   @override
   void dispose() {
     arCoreController.dispose();
-    super.dispose();
+
     if (widget.selectedProd != null) {
       widget.selectedProd = null;
     }
+    setState(() {});
+    super.dispose();
   }
 }

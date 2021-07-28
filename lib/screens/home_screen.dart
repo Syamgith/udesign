@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:udesign/models/user_model.dart';
@@ -34,79 +36,85 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: null,
-      body: DefaultTabController(
-        length: 3,
-        initialIndex: widget.index,
-        child: Stack(
-          children: <Widget>[
-            Container(
-              height: double.infinity,
-              width: double.infinity,
-            ),
-            Scaffold(
-              bottomNavigationBar: Padding(
-                padding: const EdgeInsets.only(top: 4.0),
-                child: !showIcons
-                    ? null
-                    : TabBar(
-                        tabs: <Widget>[
-                          Tab(
-                            icon: Column(
-                              children: [
-                                Icon(Icons.camera_alt),
-                                Text(
-                                  'Scan',
-                                  style: TextStyle(fontSize: 8),
-                                ),
-                              ],
+    return WillPopScope(
+      onWillPop: () {
+        exit(0);
+      },
+      child: Scaffold(
+        floatingActionButton: null,
+        body: DefaultTabController(
+          length: 3,
+          initialIndex: widget.index,
+          child: Stack(
+            children: <Widget>[
+              Container(
+                height: double.infinity,
+                width: double.infinity,
+              ),
+              Scaffold(
+                bottomNavigationBar: Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: !showIcons
+                      ? null
+                      : TabBar(
+                          tabs: <Widget>[
+                            Tab(
+                              icon: Column(
+                                children: [
+                                  Icon(Icons.camera_alt),
+                                  Text(
+                                    'Scan',
+                                    style: TextStyle(fontSize: 8),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          Tab(
-                            icon: Column(
-                              children: [
-                                Icon(Icons.store),
-                                Text(
-                                  'Products',
-                                  style: TextStyle(fontSize: 8),
-                                ),
-                              ],
+                            Tab(
+                              icon: Column(
+                                children: [
+                                  Icon(Icons.store),
+                                  Text(
+                                    'Products',
+                                    style: TextStyle(fontSize: 8),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          Tab(
-                            icon: Column(
-                              children: [
-                                Icon(Icons.account_circle_rounded),
-                                Text(
-                                  'Profile',
-                                  style: TextStyle(fontSize: 8),
-                                ),
-                              ],
+                            Tab(
+                              icon: Column(
+                                children: [
+                                  Icon(Icons.account_circle_rounded),
+                                  Text(
+                                    'Profile',
+                                    style: TextStyle(fontSize: 8),
+                                  ),
+                                ],
+                              ),
                             ),
+                          ],
+                          labelColor: Theme.of(context).accentColor,
+                          indicator: UnderlineTabIndicator(
+                            borderSide: BorderSide(
+                                color: Theme.of(context).accentColor,
+                                width: 0.0),
+                            insets: EdgeInsets.only(bottom: 52),
                           ),
-                        ],
-                        labelColor: Theme.of(context).accentColor,
-                        indicator: UnderlineTabIndicator(
-                          borderSide: BorderSide(
-                              color: Theme.of(context).accentColor, width: 0.0),
-                          insets: EdgeInsets.only(bottom: 52),
+                          unselectedLabelColor: Colors.grey,
                         ),
-                        unselectedLabelColor: Colors.grey,
-                      ),
+                ),
+                body: TabBarView(
+                  children: <Widget>[
+                    ScanScreen(
+                      setHomeIcon: setShowIcon,
+                      selectedProd: widget.selectedProduct ?? null,
+                    ),
+                    ProductsScreen(),
+                    ProfileScreen(),
+                  ],
+                ),
               ),
-              body: TabBarView(
-                children: <Widget>[
-                  ScanScreen(
-                    setHomeIcon: setShowIcon,
-                    selectedProd: widget.selectedProduct ?? null,
-                  ),
-                  ProductsScreen(),
-                  ProfileScreen(),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
