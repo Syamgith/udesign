@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:udesign/models/user_model.dart';
 import 'package:udesign/screens/products_screen.dart';
 import 'package:udesign/screens/profile_screen.dart';
 import 'package:udesign/screens/scan_screen.dart';
+import 'package:udesign/utils/utils.dart';
 
 class Home extends StatefulWidget {
   final index;
@@ -18,6 +21,15 @@ class _HomeState extends State<Home> {
   setShowIcon(bool b) {
     showIcons = b;
     setState(() {});
+  }
+
+  void getDetails() async {
+    final name = await Utils.getString('name');
+    final email = await Utils.getString('email');
+    final registered = await Utils.getBool('registered');
+
+    Provider.of<UserModel>(context, listen: false)
+        .setNewUser(name, email, registered);
   }
 
   @override

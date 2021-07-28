@@ -1,7 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:udesign/resources/style_resourses.dart';
 
 class Utils {
+  static SharedPreferences sharedPreferences;
+
+  static setString(String key, String value) async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences?.setString(key, value);
+  }
+
+  static setBool(String key, bool value) async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences?.setBool(key, value);
+  }
+
+  static getString(String key) async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    return (sharedPreferences.getString(key) ?? '');
+  }
+
+  static Future<bool> getBool(String key) async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    return (sharedPreferences.getBool(key) ?? false);
+  }
+
   static showProgress(BuildContext context) {
     showDialog(
         context: context,

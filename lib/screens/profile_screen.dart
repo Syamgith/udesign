@@ -1,11 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:provider/provider.dart';
 import 'package:udesign/components/drawer_widget.dart';
+import 'package:udesign/models/user_model.dart';
 import 'package:udesign/resources/style_resourses.dart';
 import 'package:udesign/screens/login_screen.dart';
 import 'package:udesign/screens/register_screen.dart';
+import 'package:udesign/utils/utils.dart';
 
 class ProfileScreen extends StatefulWidget {
+  UserModel user;
+  ProfileScreen({this.user});
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -14,20 +20,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Color color1 = Colors.black;
   Color color2 = Colors.blue;
   Color color3 = Colors.red;
+  String name = '';
+  String email = '';
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDetails();
+  }
+
+  void getDetails() async {
+    name = await Utils.getString('name');
+    email = await Utils.getString('email');
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: DrawerWidget(),
-      appBar: AppBar(
-        centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
-        title: Text(
-          'Profile',
-          style: StyleResourse.AppBarTitleStyle,
-        ),
-      ),
-      body: userUI(context),
-    );
+        drawer: DrawerWidget(),
+        appBar: AppBar(
+            centerTitle: true,
+            iconTheme: IconThemeData(color: Colors.white),
+            title: Text(
+              'Profile',
+              style: StyleResourse.AppBarTitleStyle,
+            ),
+            actions: <Widget>[
+              PopupMenuButton<String>(
+                onSelected: (value) {
+                  if (value == 'Logout') {
+                    logout();
+                  }
+                },
+                itemBuilder: (BuildContext context) {
+                  return <String>['Logout'].map((String choice) {
+                    return PopupMenuItem<String>(
+                      value: choice,
+                      child: Text(choice),
+                    );
+                  }).toList();
+                },
+              )
+            ]),
+        body: FutureBuilder<bool>(
+            future: Utils.getBool('registered'),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return snapshot.data ? userUI(context) : guestUI((context));
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            }));
   }
 
   Widget userUI(context) {
@@ -41,14 +87,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             CircleAvatar(
               radius: MediaQuery.of(context).size.width / 4,
               child: Text(
-                "Name",
+                name,
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
             ),
             SizedBox(height: 16),
-            Text("Name"),
+            Text(name),
             SizedBox(height: 16),
-            Text("Email: "),
+            Text("Email: $email"),
             SizedBox(height: 16),
             Divider(),
             Padding(
@@ -152,7 +198,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        Center(child: Text('Hi guest!')),
+        Center(
+            child: Text(
+          'Hi guest!\nwelcome',
+          style: StyleResourse.greyLargeStyle,
+          textAlign: TextAlign.center,
+        )),
         loginOrRegisterButton(context),
       ],
     );
@@ -191,5 +242,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ],
     );
+  }
+
+  void logout() {
+    FirebaseAuth.instance.signOut().then((value) {
+      print('logout pressed');
+      Utils.setBool('registered', false);
+      Utils.setString('name', 'Guest');
+      Utils.setString('email', 'none');
+
+      Provider.of<UserModel>(context, listen: false)
+          .setNewUser("Guest", "none", false);
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+          (Route<dynamic> route) => false);
+    });
   }
 }

@@ -3,14 +3,17 @@ import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 import 'package:native_screenshot/native_screenshot.dart';
+import 'package:provider/provider.dart';
 import 'package:udesign/components/drawer_widget.dart';
 import 'package:udesign/components/list_object_selection.dart';
 import 'package:udesign/models/product_model.dart';
+import 'package:udesign/models/user_model.dart';
 import 'package:udesign/resources/style_resourses.dart';
 import 'package:udesign/utils/utils.dart';
 
 class ScanScreen extends StatefulWidget {
   final Function setHomeIcon;
+
   Product selectedProd;
   ScanScreen({this.setHomeIcon, this.selectedProd});
   @override
@@ -22,6 +25,7 @@ class _ScanScreenState extends State<ScanScreen> {
   Widget _imgHolder;
   Product objectSelected;
   bool showInstrutions = true;
+  // bool registered;
   bool save = false;
   @override
   void initState() {
@@ -30,6 +34,7 @@ class _ScanScreenState extends State<ScanScreen> {
       child: Icon(Icons.image),
     );
     objectSelected = widget.selectedProd ?? null;
+    // registered = Provider.of<UserModel>(context, listen: false).registered;
   }
 
   @override
@@ -78,19 +83,21 @@ class _ScanScreenState extends State<ScanScreen> {
                         : Container(),
                   ),
           ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: save
-                ? Container()
-                : IconButton(
-                    padding: EdgeInsets.all(10),
-                    icon: Icon(
-                      Icons.save,
-                      size: 32,
-                      color: Theme.of(context).primaryColor,
+          Consumer<UserModel>(
+            builder: (context, usermodel, _) => Align(
+              alignment: Alignment.bottomRight,
+              child: !usermodel.registered || save
+                  ? Container()
+                  : IconButton(
+                      padding: EdgeInsets.all(10),
+                      icon: Icon(
+                        Icons.save,
+                        size: 32,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      onPressed: saveImage,
                     ),
-                    onPressed: saveImage,
-                  ),
+            ),
           ),
         ],
       ),

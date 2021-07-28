@@ -1,6 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:udesign/models/user_model.dart';
+import 'package:udesign/resources/style_resourses.dart';
 import 'package:udesign/screens/home_screen.dart';
+import 'package:udesign/screens/register_screen.dart';
 import 'package:udesign/utils/utils.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -8,7 +12,8 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('Login', style: StyleResourse.AppBarTitleStyle),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: MyCustomForm(),
     );
@@ -60,6 +65,10 @@ class MyCustomFormState extends State<MyCustomForm> {
               ],
             ),
           ),
+          forgotPasswordField(),
+          SizedBox(
+            height: 20,
+          ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 10),
             height: 50,
@@ -71,6 +80,46 @@ class MyCustomFormState extends State<MyCustomForm> {
                 'Login',
                 style: TextStyle(color: Colors.white, fontSize: 25),
               ),
+            ),
+          ),
+          notAMemberField(),
+        ],
+      ),
+    );
+  }
+
+  Widget forgotPasswordField() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        MaterialButton(
+            child: Text(
+              "Forgot passwod" + " ?",
+              style: StyleResourse.AppBarTitleStyle,
+            ),
+            onPressed: () {
+              //showEmailAlertBox(context);
+            }),
+      ],
+    );
+  }
+
+  Widget notAMemberField() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            "Not a member" + " ?",
+          ),
+          MaterialButton(
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => RegisterScreen()));
+            },
+            child: Text(
+              "Register",
             ),
           ),
         ],
@@ -90,8 +139,14 @@ class MyCustomFormState extends State<MyCustomForm> {
           .user;
       if (user != null) {
         Utils.hideProgress(context);
-        // SharedUtils.setString(Constants.DISPLAY_NAME, user.displayName);
-        // SharedUtils.setString(Constants.UID, user.uid);
+
+        Utils.setBool('registered', true);
+        Utils.setString('name', user.displayName);
+        Utils.setString('email', user.email);
+
+        Provider.of<UserModel>(context, listen: false)
+            .setNewUser(user.displayName, user.email, true);
+
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => Home(index: 2)));
         print(user.displayName);
@@ -122,5 +177,12 @@ class MyCustomFormState extends State<MyCustomForm> {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }

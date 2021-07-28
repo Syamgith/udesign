@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:udesign/components/recommeded_view.dart';
 import 'package:udesign/models/product_model.dart';
 import 'package:udesign/resources/product_datas.dart';
 import 'package:udesign/resources/style_resourses.dart';
@@ -103,11 +104,25 @@ class _ListObjectSelectionState extends State<ListObjectSelection> {
                       context: context,
                       barrierDismissible: false,
                       builder: (BuildContext context) {
-                        return Center(
-                            child: Text(
-                          'recommendation',
-                          style: StyleResourse.primaryTitleStyle,
-                        ));
+                        return Dialog(
+                            child: Container(
+                                height: MediaQuery.of(context).size.height / 2,
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'Recommendations for you',
+                                        style: StyleResourse.AppBarTitleStyle,
+                                      ),
+                                    ),
+                                    Expanded(
+                                        child: Padding(
+                                      padding: const EdgeInsets.only(bottom: 4),
+                                      child: RecommededView(context: context),
+                                    )),
+                                  ],
+                                )));
                       });
                 },
                 child: Card(
