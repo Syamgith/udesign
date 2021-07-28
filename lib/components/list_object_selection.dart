@@ -106,20 +106,37 @@ class _ListObjectSelectionState extends State<ListObjectSelection> {
                       builder: (BuildContext context) {
                         return Dialog(
                             child: Container(
-                                height: MediaQuery.of(context).size.height / 2,
+                                height:
+                                    MediaQuery.of(context).size.height / 2.5,
                                 child: Column(
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        'Recommendations for you',
-                                        style: StyleResourse.AppBarTitleStyle,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Text(
+                                            'Recommendations for you',
+                                            style:
+                                                StyleResourse.AppBarTitleStyle,
+                                          ),
+                                          IconButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              icon: Icon(Icons.close)),
+                                        ],
                                       ),
                                     ),
                                     Expanded(
                                         child: Padding(
                                       padding: const EdgeInsets.only(bottom: 4),
-                                      child: RecommededView(context: context),
+                                      child: RecommededView(
+                                        context: context,
+                                        fromScan: true,
+                                        onTap: widget.onTap,
+                                      ),
                                     )),
                                   ],
                                 )));

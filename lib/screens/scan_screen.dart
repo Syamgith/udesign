@@ -33,7 +33,6 @@ class _ScanScreenState extends State<ScanScreen> {
       child: Icon(Icons.image),
     );
     objectSelected = widget.selectedProd ?? null;
-    // registered = Provider.of<UserModel>(context, listen: false).registered;
   }
 
   @override
@@ -86,14 +85,26 @@ class _ScanScreenState extends State<ScanScreen> {
               alignment: Alignment.bottomRight,
               child: !usermodel.registered || save
                   ? Container()
-                  : IconButton(
-                      padding: EdgeInsets.all(10),
-                      icon: Icon(
-                        Icons.save,
-                        size: 32,
-                        color: Theme.of(context).primaryColor,
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            "Save",
+                            style: StyleResourse.primarySmallTitleStyle,
+                          ),
+                          IconButton(
+                            padding: EdgeInsets.only(bottom: 8),
+                            icon: Icon(
+                              Icons.save,
+                              size: 32,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            onPressed: saveImage,
+                          ),
+                        ],
                       ),
-                      onPressed: saveImage,
                     ),
             ),
           ),
@@ -196,7 +207,10 @@ class _ScanScreenState extends State<ScanScreen> {
       context: context,
       builder: (context) => Scaffold(
         appBar: AppBar(
-          title: Text("Your Design"),
+          title: Text(
+            "Your Design",
+            style: StyleResourse.AppBarTitleStyle,
+          ),
         ),
         body: ListView(
           children: [
@@ -213,8 +227,11 @@ class _ScanScreenState extends State<ScanScreen> {
                 icon: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Share'),
-                    Icon(Icons.share),
+                    Text(
+                      'Share',
+                      style: StyleResourse.primaryTitleStyle,
+                    ),
+                    Icon(Icons.share, color: Colors.amber),
                   ],
                 ))
           ],

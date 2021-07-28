@@ -37,53 +37,66 @@ class MyCustomFormState extends State<MyCustomForm> {
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-            child: TextFormField(
-              controller: emailController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Email',
+      child: SingleChildScrollView(
+        child: Container(
+          color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Image.asset(
+                  "assets/logo.jpeg",
+                  height: MediaQuery.of(context).size.height / 6,
+                ),
               ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              children: <Widget>[
-                TextFormField(
-                  controller: passwordController,
-                  obscureText: true,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextFormField(
+                  controller: emailController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Password',
+                    labelText: 'Email',
                   ),
                 ),
-              ],
-            ),
-          ),
-          forgotPasswordField(),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            height: 50,
-            width: 350,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-            child: ElevatedButton(
-              onPressed: login,
-              child: Text(
-                'Login',
-                style: TextStyle(color: Colors.white, fontSize: 25),
               ),
-            ),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  children: <Widget>[
+                    TextFormField(
+                      controller: passwordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Password',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              forgotPasswordField(),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                height: 50,
+                width: 350,
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                child: ElevatedButton(
+                  onPressed: login,
+                  child: Text(
+                    'Login',
+                    style: TextStyle(color: Colors.white, fontSize: 25),
+                  ),
+                ),
+              ),
+              notAMemberField(),
+            ],
           ),
-          notAMemberField(),
-        ],
+        ),
       ),
     );
   }

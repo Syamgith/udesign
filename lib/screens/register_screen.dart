@@ -70,106 +70,119 @@ class MyCustomFormState extends State<MyCustomForm> {
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-            child: TextFormField(
-              controller: userNameController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Name',
+      child: SingleChildScrollView(
+        child: Container(
+          color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Image.asset(
+                  "assets/logo.jpeg",
+                  height: MediaQuery.of(context).size.height / 6,
+                ),
               ),
-              validator: (name) {
-                Pattern pattern = r'^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$';
-                RegExp regex = new RegExp(pattern);
-                if (!regex.hasMatch(name) || name.length > 16)
-                  return 'Invalid username';
-                else
-                  return null;
-              },
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-            child: TextFormField(
-              controller: emailController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Email',
-              ),
-              validator: (email) {
-                Pattern pattern =
-                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-                RegExp regex = new RegExp(pattern);
-                if (!regex.hasMatch(email) || email.length > 16)
-                  return "Invalid Email";
-                else
-                  return null;
-              },
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              children: <Widget>[
-                TextFormField(
-                    controller: passwordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Password',
-                    ),
-                    validator: (val) {
-                      if (val.isEmpty || val.length > 16)
-                        return 'Pasword cannot be empty';
-                      return null;
-                    }),
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              children: <Widget>[
-                TextFormField(
-                  controller: rePasswordController,
-                  obscureText: true,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextFormField(
+                  controller: userNameController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Re-enter password',
+                    labelText: 'Name',
                   ),
-                  validator: (password) {
-                    if (password != passwordController.text)
-                      return "Password doesn't match";
+                  validator: (name) {
+                    Pattern pattern = r'^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$';
+                    RegExp regex = new RegExp(pattern);
+                    if (!regex.hasMatch(name) || name.length > 16)
+                      return 'Invalid username';
                     else
                       return null;
                   },
                 ),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            height: 50,
-            width: 350,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-            child: ElevatedButton(
-              onPressed: () {
-                if (formKey.currentState.validate()) {
-                  formKey.currentState.save();
-                  register();
-                }
-              },
-              child: Text(
-                'Register',
-                style: TextStyle(color: Colors.white, fontSize: 25),
               ),
-            ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextFormField(
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Email',
+                  ),
+                  validator: (email) {
+                    Pattern pattern =
+                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+                    RegExp regex = new RegExp(pattern);
+                    if (!regex.hasMatch(email) || email.length > 16)
+                      return "Invalid Email";
+                    else
+                      return null;
+                  },
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  children: <Widget>[
+                    TextFormField(
+                        controller: passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Password',
+                        ),
+                        validator: (val) {
+                          if (val.isEmpty || val.length > 16)
+                            return 'Pasword cannot be empty';
+                          return null;
+                        }),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  children: <Widget>[
+                    TextFormField(
+                      controller: rePasswordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Re-enter password',
+                      ),
+                      validator: (password) {
+                        if (password != passwordController.text)
+                          return "Password doesn't match";
+                        else
+                          return null;
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                height: 50,
+                width: 350,
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (formKey.currentState.validate()) {
+                      formKey.currentState.save();
+                      register();
+                    }
+                  },
+                  child: Text(
+                    'Register',
+                    style: TextStyle(color: Colors.white, fontSize: 25),
+                  ),
+                ),
+              ),
+              renderAlreadyHaveAccount(),
+            ],
           ),
-          renderAlreadyHaveAccount(),
-        ],
+        ),
       ),
     );
   }

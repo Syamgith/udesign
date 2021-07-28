@@ -25,9 +25,12 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-# For information on the generic Dart part of this file, see the
-# following page: https://www.dartlang.org/tools/pub/pubspec
+  flutter_launcher_icons: '^0.9.1'
 
+flutter_icons:
+  android: true
+  ios: false
+  image_path: 'assets/logo.jpeg'
 # The following section is specific to Flutter.
 flutter:
   # The following line ensures that the Material Icons font is

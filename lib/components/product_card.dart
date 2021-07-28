@@ -4,15 +4,18 @@ import 'package:udesign/resources/style_resourses.dart';
 import 'package:udesign/screens/home_screen.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({
-    Key key,
-    @required this.context,
-    @required this.product,
-  }) : super(key: key);
+  ProductCard(
+      {Key key,
+      @required this.context,
+      @required this.product,
+      this.fromScan = false,
+      this.onTap})
+      : super(key: key);
 
   final BuildContext context;
   final Product product;
-
+  Function onTap;
+  bool fromScan;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -24,13 +27,19 @@ class ProductCard extends StatelessWidget {
                 backgroundColor: Colors.black,
                 title: InkWell(
                   onTap: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Home(
-                                  index: 0,
-                                  selectedProduct: product,
-                                )));
+                    if (fromScan) {
+                      onTap(product);
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    } else {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Home(
+                                    index: 0,
+                                    selectedProduct: product,
+                                  )));
+                    }
                   },
                   child: Text(
                     "Click to show in room",

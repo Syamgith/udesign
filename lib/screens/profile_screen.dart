@@ -62,77 +62,89 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: MediaQuery.of(context).size.width / 4,
-                child: Text(
-                  user.name,
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Card(
+                  margin: EdgeInsets.all(10),
+                  color: Colors.black87,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.all(16),
+                    height: MediaQuery.of(context).size.height / 4,
+                    child: Center(
+                        child: Text(
+                      'Hi Welcome\n${user.name}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 20, color: Colors.amber),
+                    )),
+                  ),
                 ),
-              ),
-              SizedBox(height: 16),
-              Text(user.name),
-              SizedBox(height: 16),
-              Text("Email: ${user.email}"),
-              SizedBox(height: 16),
-              Divider(),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        ListTile(
-                          title: Center(
-                              child: Text(
-                            'Pick your favorite colors',
-                            style: StyleResourse.AppBarTitleStyle,
-                          )),
-                          onTap: () {},
-                        ),
-                        SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                                icon: Icon(
-                                  Icons.circle,
-                                  color: color1,
-                                  size: 35,
-                                ),
-                                onPressed: () {
-                                  selectColor(1);
-                                }),
-                            IconButton(
-                                icon: Icon(
-                                  Icons.circle,
-                                  color: color2,
-                                  size: 35,
-                                ),
-                                onPressed: () {
-                                  selectColor(2);
-                                }),
-                            IconButton(
-                                icon: Icon(
-                                  Icons.circle,
-                                  color: color3,
-                                  size: 35,
-                                ),
-                                onPressed: () {
-                                  selectColor(3);
-                                }),
-                          ],
-                        ),
-                      ],
+                SizedBox(height: 16),
+                Text('Name: ${user.name}'),
+                SizedBox(height: 16),
+                Text("Email: ${user.email}"),
+                SizedBox(height: 16),
+                Divider(),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          ListTile(
+                            title: Center(
+                                child: Text(
+                              'Pick your favorite colors',
+                              style: StyleResourse.AppBarTitleStyle,
+                            )),
+                            onTap: () {},
+                          ),
+                          SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                  icon: Icon(
+                                    Icons.circle,
+                                    color: color1,
+                                    size: 35,
+                                  ),
+                                  onPressed: () {
+                                    selectColor(1);
+                                  }),
+                              IconButton(
+                                  icon: Icon(
+                                    Icons.circle,
+                                    color: color2,
+                                    size: 35,
+                                  ),
+                                  onPressed: () {
+                                    selectColor(2);
+                                  }),
+                              IconButton(
+                                  icon: Icon(
+                                    Icons.circle,
+                                    color: color3,
+                                    size: 35,
+                                  ),
+                                  onPressed: () {
+                                    selectColor(3);
+                                  }),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );
@@ -182,11 +194,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Center(
-            child: Text(
-          'Hi guest!\nwelcome',
-          style: StyleResourse.greyLargeStyle,
-          textAlign: TextAlign.center,
-        )),
+          child: Card(
+            margin: EdgeInsets.all(10),
+            color: Colors.black87,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Container(
+              padding: EdgeInsets.all(16),
+              height: MediaQuery.of(context).size.height / 4,
+              child: Center(
+                  child: Text(
+                'Hi there Welcome',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20, color: Colors.amber),
+              )),
+            ),
+          ),
+        ),
         loginOrRegisterButton(context),
       ],
     );
