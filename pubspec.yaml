@@ -13,13 +13,24 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   arcore_flutter_plugin:
+  firebase_core: ^1.4.0
+  firebase_auth: ^3.0.1
+  cloud_firestore: ^2.4.0
+  flutter_colorpicker: 0.3.2
+  native_screenshot:
+  esys_flutter_share:
+  shared_preferences: ^2.0.6
+  provider: ^5.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-# For information on the generic Dart part of this file, see the
-# following page: https://www.dartlang.org/tools/pub/pubspec
+  flutter_launcher_icons: '^0.9.1'
 
+flutter_icons:
+  android: true
+  ios: false
+  image_path: 'assets/logo.jpeg'
 # The following section is specific to Flutter.
 flutter:
   # The following line ensures that the Material Icons font is

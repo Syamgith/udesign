@@ -1,32 +1,54 @@
+import 'dart:io';
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
-import 'package:udesign/components/drawer_widget.dart';
+import 'package:flutter/services.dart';
+import 'package:native_screenshot/native_screenshot.dart';
+import 'package:provider/provider.dart';
+import 'package:udesign/components/list_object_selection.dart';
+import 'package:udesign/models/product_model.dart';
+import 'package:udesign/models/user_model.dart';
 import 'package:udesign/resources/style_resourses.dart';
+import 'package:udesign/utils/utils.dart';
 
 class ScanScreen extends StatefulWidget {
+  final Function setHomeIcon;
+
+  Product selectedProd;
+  ScanScreen({this.setHomeIcon, this.selectedProd});
   @override
   _ScanScreenState createState() => _ScanScreenState();
 }
 
 class _ScanScreenState extends State<ScanScreen> {
   ArCoreController arCoreController;
-
-  String objectSelected;
-  bool isRemote;
-  // bool showProducts = true;
+  Widget _imgHolder;
+  Product objectSelected;
+  bool showInstrutions = true;
+  // bool registered;
+  bool save = false;
+  @override
+  void initState() {
+    super.initState();
+    _imgHolder = Center(
+      child: Icon(Icons.image),
+    );
+    objectSelected = widget.selectedProd ?? null;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: DrawerWidget(),
-      appBar: AppBar(
-        centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
-        title: const Text(
-          'Udesign',
-          style: StyleResourse.AppBarTitleStyle,
-        ),
-      ),
+      appBar: save
+          ? null
+          : AppBar(
+              centerTitle: true,
+              iconTheme: IconThemeData(color: Colors.white),
+              title: const Text(
+                'Udesign',
+                style: StyleResourse.AppBarTitleStyle,
+              ),
+            ),
       body: Stack(
         children: <Widget>[
           ArCoreView(
@@ -35,11 +57,56 @@ class _ScanScreenState extends State<ScanScreen> {
           ),
           Align(
             alignment: Alignment.topLeft,
-            child: ListObjectSelection(
-              onTap: (value, remote) {
-                objectSelected = value;
-                isRemote = remote;
-              },
+            child: save || widget.selectedProd != null
+                ? Container()
+                : ListObjectSelection(
+                    onTap: (prod) {
+                      objectSelected = prod;
+                    },
+                  ),
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: save
+                ? Container()
+                : Center(
+                    child: showInstrutions
+                        ? Text(
+                            'Detect a plane and tap on dotted plane.',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          )
+                        : Container(),
+                  ),
+          ),
+          Consumer<UserModel>(
+            builder: (context, usermodel, _) => Align(
+              alignment: Alignment.bottomRight,
+              child: !usermodel.registered || save
+                  ? Container()
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            "Save",
+                            style: StyleResourse.primarySmallTitleStyle,
+                          ),
+                          IconButton(
+                            padding: EdgeInsets.only(bottom: 8),
+                            icon: Icon(
+                              Icons.save,
+                              size: 32,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            onPressed: saveImage,
+                          ),
+                        ],
+                      ),
+                    ),
             ),
           ),
         ],
@@ -55,34 +122,29 @@ class _ScanScreenState extends State<ScanScreen> {
 
   void _addObject(ArCoreHitTestResult plane) {
     if (objectSelected != null) {
+      Utils.showLoadingModel(context);
       //"https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/Duck/glTF/Duck.gltf"
-      final node = isRemote
+      final node = objectSelected.model.isRemote
           ? ArCoreReferenceNode(
-              name: objectSelected,
-              objectUrl: objectSelected,
+              name: objectSelected.title,
+              objectUrl: objectSelected.model.address,
               position: plane.pose.translation,
               rotation: plane.pose.rotation)
           : ArCoreReferenceNode(
-              name: objectSelected,
-              object3DFileName: objectSelected,
+              name: objectSelected.title,
+              object3DFileName: objectSelected.model.address,
               position: plane.pose.translation,
               rotation: plane.pose.rotation);
 
-      arCoreController.addArCoreNodeWithAnchor(node);
+      arCoreController
+          .addArCoreNodeWithAnchor(node)
+          .then((value) => Utils.hideProgress(context));
 
-      // setState(() {
-      //   showProducts = false;
-      // });
+      setState(() {
+        showInstrutions = false;
+      });
     } else {
-      // setState(() {
-      //   showProducts = true;
-      // });
-
-      showDialog<void>(
-        context: context,
-        builder: (BuildContext context) =>
-            AlertDialog(content: Text('Select an object!')),
-      );
+      Utils.popUpDelayed(context, "Select a Product");
     }
   }
 
@@ -104,7 +166,7 @@ class _ScanScreenState extends State<ScanScreen> {
                   Icons.delete,
                 ),
                 onPressed: () {
-                  arCoreController.removeNode(nodeName: name);
+                  arCoreController.dispose();
                   Navigator.pop(context);
                 })
           ],
@@ -113,79 +175,119 @@ class _ScanScreenState extends State<ScanScreen> {
     );
   }
 
+  void saveImage() {
+    save = true;
+    widget.setHomeIcon(false);
+    showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                backgroundColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                content: Text(
+                  "Capture and Save",
+                  style: StyleResourse.primaryTitleStyle,
+                ),
+                actions: [
+                  TextButton(
+                      child: Text("OK"),
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                      })
+                ],
+              );
+            })
+        .then((value) =>
+            Future.delayed((Duration(seconds: 1)), () => nativeSS()));
+  }
+
+  Future<dynamic> showimgWidget(BuildContext context, imgFile) {
+    return showDialog(
+      useSafeArea: false,
+      context: context,
+      builder: (context) => Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "Your Design",
+            style: StyleResourse.AppBarTitleStyle,
+          ),
+        ),
+        body: ListView(
+          children: [
+            Container(
+              padding: EdgeInsets.only(top: 16),
+              height: MediaQuery.of(context).size.height / 1.5,
+              //constraints: BoxConstraints.expand(),
+              child: _imgHolder,
+            ),
+            IconButton(
+                onPressed: () {
+                  _shareImage(imgFile);
+                },
+                icon: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Share',
+                      style: StyleResourse.primaryTitleStyle,
+                    ),
+                    Icon(Icons.share, color: Colors.amber),
+                  ],
+                ))
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _shareImage(imgFile) async {
+    try {
+      final bytes1 = await imgFile.readAsBytes(); // Uint8List
+      final bytes = bytes1.buffer.asByteData(); // ByteData
+      await Share.file(
+          'Share image', 'esys.png', bytes.buffer.asUint8List(), 'image/png',
+          text: 'check out my pic.');
+    } catch (e) {
+      print('error: $e');
+    }
+  }
+
+  void nativeSS() async {
+    String path = await NativeScreenshot.takeScreenshot();
+
+    debugPrint('Screenshot taken, path: $path');
+
+    if (path == null || path.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Error saving image :('),
+        backgroundColor: Colors.red,
+      )); // showSnackBar()
+      save = false;
+      widget.setHomeIcon(true);
+      return;
+    } // if error
+
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('The image has been saved to: $path')));
+
+    File imgFile = File(path);
+    _imgHolder = Image.file(imgFile);
+
+    save = false;
+    widget.setHomeIcon(true);
+    setState(() {});
+    showimgWidget(context, imgFile);
+  }
+
   @override
   void dispose() {
     arCoreController.dispose();
+
+    if (widget.selectedProd != null) {
+      widget.selectedProd = null;
+    }
+    setState(() {});
     super.dispose();
-  }
-}
-
-class ListObjectSelection extends StatefulWidget {
-  final Function onTap;
-
-  ListObjectSelection({this.onTap});
-
-  @override
-  _ListObjectSelectionState createState() => _ListObjectSelectionState();
-}
-
-class _ListObjectSelectionState extends State<ListObjectSelection> {
-  List<String> imageUrls = [
-    'https://i.pinimg.com/originals/cc/5e/31/cc5e311fba93e4d2da4a25f04e9bb212.png',
-    'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/GlamVelvetSofa/screenshot/screenshot.jpg',
-    'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/BoomBox/screenshot/screenshot.jpg',
-    'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/SheenChair/screenshot/screenshot.jpg',
-  ];
-
-  List<String> objectsFileName = [
-    'couch.sfb',
-    'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/GlamVelvetSofa/glTF/GlamVelvetSofa.gltf',
-    'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/BoomBox/glTF/BoomBox.gltf',
-    'https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/SheenChair/glTF/SheenChair.gltf'
-  ];
-
-  String selected;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 130.0,
-      child: ListView.builder(
-        itemCount: imageUrls.length,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                selected = imageUrls[index];
-                var remote = index != 0;
-                widget.onTap(objectsFileName[index], remote);
-              });
-            },
-            child: Card(
-              elevation: 4.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
-                ),
-              ),
-              child: Container(
-                color: selected == imageUrls[index]
-                    ? Theme.of(context).primaryColor
-                    : Colors.transparent,
-                padding:
-                    selected == imageUrls[index] ? EdgeInsets.all(8.0) : null,
-                child: Image.network(imageUrls[index]),
-              ),
-            ),
-          );
-        },
-      ),
-    );
   }
 }

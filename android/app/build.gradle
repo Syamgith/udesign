@@ -22,6 +22,7 @@ if (flutterVersionName == null) {
 }
 
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 apply plugin: 'com.google.ar.sceneform.plugin'
@@ -70,24 +71,49 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation platform('com.google.firebase:firebase-bom:28.2.1')
+    implementation 'com.google.firebase:firebase-analytics'
 }
-
-// sceneform.asset('sampledata/Andy.obj',
-//         'default',
-//         'sampledata/Andy.sfa',
-//         'src/main/assets/andy')
+// sceneform.asset('sampledata/Wal_Clok/fox_face.fbx',
+//         'sampledata/fox_face_material.mat',
+//         'sampledata/fox_face.sfa',
+//         'src/main/assets/fox_face')
 
 sceneform.asset('sampledata/scaniverse-20210703-120826.obj',
         'default',
         'sampledata/scaniverse-20210703-120826.sfa',
         'src/main/assets/couch')
 
-// sceneform.asset('sampledata/ArcticFox_Posed.obj',
-//         'default',
-//         'sampledata/ArcticFox_Posed.sfa',
-//         'src/main/assets/artic_fox')
+sceneform.asset('sampledata/tredmill/Treadmill OBJ.obj',
+        'default',
+        'sampledata/tredmill/Treadmill OBJ.sfa',
+        'src/main/assets/tredmill')
 
-// sceneform.asset('sampledata/fox_face.fbx',
-//         'sampledata/fox_face_material.mat',
-//         'sampledata/fox_face.sfa',
-//         'src/main/assets/fox_face')
+sceneform.asset('sampledata/sofa/sofa.obj',
+        'default',
+        'sampledata/sofa/sofa.sfa',
+        'src/main/assets/sofa')
+
+sceneform.asset('sampledata/potted_plant/potted_plant_obj.obj',
+        'default',
+        'sampledata/potted_plant/potted_plant_obj.sfa',
+        'src/main/assets/potted_plant')
+sceneform.asset('sampledata/piano/Piano.obj',
+        'default',
+        'sampledata/piano/Piano.sfa',
+        'src/main/assets/piano')
+
+sceneform.asset('sampledata/ceiling_fan/Ceiling Fan.obj',
+        'default',
+        'sampledata/ceiling_fan/Ceiling Fan.sfa',
+        'src/main/assets/ceiling_fan')
+
+sceneform.asset('sampledata/a_light/eb_sconce_light_01.obj',
+        'default',
+        'sampledata/a_light/eb_sconce_light_01.sfa',
+        'src/main/assets/light')
+
+sceneform.asset('sampledata/a_lamb/eb_lamp_01.obj',
+        'default',
+        'sampledata/a_lamb/eb_lamp_01.sfa',
+        'src/main/assets/lamp3')

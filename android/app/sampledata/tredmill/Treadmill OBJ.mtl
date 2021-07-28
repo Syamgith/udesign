@@ -1,0 +1,54 @@
+newmtl lambert3SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd TM Screen.jpg
+Ni 1.00
+Ks 0.27 0.27 0.27
+newmtl phong1SG
+illum 4
+Kd 0.24 0.31 0.37
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.38 0.38 0.38
+Ns 18.00
+newmtl phong2SG
+illum 4
+Kd 0.21 0.22 0.24
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.13 0.13 0.13
+Ns 9.46
+newmtl phong3SG
+illum 4
+Kd 0.06 0.06 0.06
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.13 0.13 0.13
+Ns 18.00
+newmtl phongE2SG
+illum 4
+Kd 0.24 0.31 0.37
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+newmtl phongE3SG
+illum 4
+Kd 0.60 0.65 0.66
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.18 0.18 0.18
+newmtl phongE4SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Treadmill Rubber.jpg
+Ni 1.00
+Ks 0.22 0.22 0.22
